@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа №3 - Форма регистрации</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 450px;
+            max-width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .gender-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .gender-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
+        .gender-group input {
+            width: auto;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 120px;
+        }
+
+        .show-password-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 8px 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .show-password-btn:hover {
+            background: #5a67d8;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 16px;
+            color: #333;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button[type="submit"]:hover:not(:disabled) {
+            background: #5a67d8;
+        }
+
+        button[type="submit"]:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <h1>Регистрация</h1>
+            
+            <!-- Поле Имя -->
+            <div class="form-group">
+                <label>Имя:</label>
+                <input 
+                    type="text" 
+                    :value="name" 
+                    @input="name = $event.target.value"
+                    placeholder="Введите имя"
+                >
+            </div>
+            
+            <!-- Поле Фамилия -->
+            <div class="form-group">
+                <label>Фамилия:</label>
+                <input 
+                    type="text" 
+                    :value="surname" 
+                    @input="surname = $event.target.value"
+                    placeholder="Введите фамилию"
+                >
+            </div>
+            
+            <!-- Поле Пол -->
+            <div class="form-group">
+                <label>Пол:</label>
+                <div class="gender-group">
+                    <label>
+                        <input 
+                            type="radio" 
+                            value="male" 
+                            :checked="gender === 'male'"
+                            @change="gender = $event.target.value"
+                        > Мужской
+                    </label>
+                    <label>
+                        <input 
+                            type="radio" 
+                            value="female" 
+                            :checked="gender === 'female'"
+                            @change="gender = $event.target.value"
+                        > Женский
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Поле Пароль -->
+            <div class="form-group">
+                <label>Пароль:</label>
+                <div class="password-wrapper">
+                    <input 
+                        :type="showPassword ? 'text' : 'password'"
+                        :value="password" 
+                        @input="password = $event.target.value"
+                        placeholder="Введите пароль"
+                    >
+                    <button 
+                        type="button"
+                        class="show-password-btn"
+                        @mousedown="showPassword = true"
+                        @mouseup="showPassword = false"
+                        @mouseleave="showPassword = false"
+                    >
+                        Показать пароль
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Поле Подтверждение пароля -->
+            <div class="form-group">
+                <label>Подтверждение пароля:</label>
+                <input 
+                    type="password"
+                    :value="confirmPassword" 
+                    @input="confirmPassword = $event.target.value"
+                    placeholder="Подтвердите пароль"
+                >
+                <div v-if="password !== confirmPassword && confirmPassword" class="error-message">
+                    Пароли не совпадают!
+                </div>
+            </div>
+            
+            <!-- Информация о пользователе -->
+            <div class="user-info">
+                <strong>Информация о пользователе:</strong><br>
+                Пользователь: {{ name || '?' }} {{ surname || '?' }}. 
+                {{ gender === 'male' ? 'Мужского пола' : gender === 'female' ? 'Женского пола' : 'Пол не указан' }}
+            </div>
+            
+            <!-- Кнопка регистрации -->
+            <button 
+                type="submit"
+                :disabled="password !== confirmPassword || !password || !confirmPassword"
+                @click="console.log(name, surname, gender, password)"
+            >
+                Зарегистрироваться
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                // Создаём ref переменные
+                const name = ref('');
+                const surname = ref('');
+                const gender = ref('');
+                const password = ref('');
+                const confirmPassword = ref('');
+                const showPassword = ref(false);
+
+                return {
+                    name,
+                    surname,
+                    gender,
+                    password,
+                    confirmPassword,
+                    showPassword
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
