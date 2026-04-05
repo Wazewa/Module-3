@@ -1,0 +1,84 @@
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(20, 25px);
+  grid-template-rows: repeat(20, 25px);
+  gap: 1px;
+  background-color: #333;
+  border: 2px solid #333;
+}
+
+.cell {
+  width: 25px;
+  height: 25px;
+  background-color: #f0f0f0;
+}
+
+.cell.snake {
+  background-color: #4caf50;
+}
+
+.cell.head {
+  background-color: #2e7d32;
+}
+
+.cell.food {
+  background-color: #ff5722;
+  border-radius: 50%;
+}
+
+.controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.joystick {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  gap: 10px;
+  margin: 20px;
+}
+
+.joystick button {
+  padding: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+}
+
+.joystick button:hover {
+  background: #45a049;
+}
+
+.score {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px;
+}
+
+.speed-control {
+  margin: 10px;
+}
+
+.speed-control input {
+  width: 200px;
+  margin-left: 10px;
+}
+
+.game-over {
+  color: red;
+  font-size: 20px;
+  margin: 10px;
+}
